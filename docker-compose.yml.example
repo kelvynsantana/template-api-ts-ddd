@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  dopplerfx-api:
+    build: .
+    container_name: dopplerfx-api
+    volumes:
+      - .:/home/node/api
+      - /home/node/api/node_modules
+    ports:
+      - '3333:3333'
+    depends_on:
+      - dopplerfx-pg
+    networks:
+      - dopplerfx-network
+  dopplerfx-pg:
+    image: postgres
+    container_name: dopplerfx-pg
+    environment:
+      - POSTGRES_USER=yourUsername
+      - POSTGRES_PASSWORD=yourPass
+      - POSTGRES_DB=yourDBName
+    volumes:
+      - dopplerfx-pg-data:/data
+    networks:
+      - dopplerfx-network
+
+volumes:
+  dopplerfx-pg-data:
+
+networks:
+  dopplerfx-network:
+    driver: bridge
